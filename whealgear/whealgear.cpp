@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define Data  1000  	// 训练样本的数量
+#define Data  100  	// 训练样本的数量
 #define TestData 10		// 测试样本的数量 
 #define In 8			// 对于每个样本有多少个输入变量 
 #define Out 2			// 对于每个样本有多少个输出变量
@@ -166,7 +166,7 @@ void result(double var[In])
 	double y[Out];
 	
 	for(i = 0; i < In; ++i){
-		var[i]=(var[i]-Minin[0]+1)/(Maxin[0]-Minin[0]+1);
+		var[i]=(var[i]-Minin[i]+1)/(Maxin[i]-Minin[i]+1);
 	}
 
 	for (i = 0; i < Neuron; ++i){
@@ -240,6 +240,7 @@ void testNetwork()
 {
 	FILE *fp1,*fp2;
 	int i,j;
+	double test[In]; 
 	if((fp1=fopen("E:\\whealgear\\test.txt","r"))==NULL){
 		printf("can not open the in file\n");
 		exit(0);
@@ -251,11 +252,13 @@ void testNetwork()
 	fclose(fp1);
 	
 	for(i=0;i<TestData;i++){
-		result(d_test[i]);	
+		for(j=0; j<In; j++){
+			test[j] = d_test[i][j];
+		}
+		result(test);	
 	}
 } 
 
-//int _tmain(int argc, _TCHAR* argv[])
 int main(int argc, char* argv[])
 {
 	readData();//准备输入，输出训练数据。
@@ -269,4 +272,4 @@ int main(int argc, char* argv[])
 
 }
 
-
+							  
