@@ -1,0 +1,16 @@
+[i1,i2] = textread('d:\neuron\in.txt' , '%f%f',1000);
+[input,minI,maxI] = premnmx( [i1,i2]');     %归一化为【-1，1】
+[o1] = textread('d:\neuron\out.txt' , '%f',1000);
+[output,minI2,maxI2] = premnmx( [o1]');     %归一化为【-1，1】
+net = newff( minmax(input) , [5 1] , { 'logsig' 'purelin' } , 'trainlm' ) ; %隐藏层5
+net.trainparam.show =1000 ;%每隔100步显示一下结果
+net.trainparam.epochs =40000 ;%最大训练次数
+net.trainparam.goal = 0.00001 ;
+net.trainParam.lr = 0.01 ;%学习率
+%开始训练
+net = train( net, input , output ) ;
+%归一化
+testInput = tramnmx ( [8,9]' , minI, maxI );
+Y = sim( net , testInput ) ;
+r=postmnmx(Y,minI2,maxI2);%反归一化
+sprintf('结果是 %3.3f',r )
